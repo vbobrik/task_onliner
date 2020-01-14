@@ -35,6 +35,11 @@ await console.log('------------url here');
 //2nd case
 await driver.findElement(By.css('.auth-bar__item.auth-bar__item--text')).click();
 await driver.findElement(By.css("[href$='registration']")).click(); //'Зарегистрироваться'
+await driver.findElement(By.css('[type="email"]')).sendKeys('123'); 
+await driver.findElement(By.xpath('.//*[text()="Некорректный e-mail"]')); 
+await driver.findElement(By.css('[placeholder="Придумайте пароль"]')).sendKeys('1234567'); 
+await driver.findElement(By.xpath('.//*[text()="Минимум 8 символов"]')).sendKeys('1234567'); 
+
 
 }
 catch(err) {
