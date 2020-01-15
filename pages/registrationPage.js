@@ -16,18 +16,28 @@ class RegistrationPage extends BasePage {
 
     async goToRegistration() {
         await this.findByCss(logIn).click();
-        const result = await this.findByCss(registration).click();
+        const result =  this.findByCss(registration).click();
         return result;
     }
     //TODO: show wrong msg
-    async typeEmail() {
-        const result = await this.findByCss(email).click();
+    async typeEmail(emailMessage) {
+        const result = await (await this.findByCss(email)).sendKeys(emailMessage);
         return result.getText();
     }
     //TODO: show wrong msg
     async typePassword() {
         return await this.findByCss(pass).click();
     }
+
+     showTipWrongEmail() {
+        return  this.findByCss(wrongEmail);
+    }
+
+     showTipWrongPass() {
+        return  this.findByCss(wrongPass);
+    }
+
+    
 }
 
 module.exports = RegistrationPage;

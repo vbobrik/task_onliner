@@ -40,6 +40,11 @@ await driver.findElement(By.xpath('.//*[text()="Некорректный e-mail"
 await driver.findElement(By.css('[placeholder="Придумайте пароль"]')).sendKeys('1234567'); 
 await driver.findElement(By.xpath('.//*[text()="Минимум 8 символов"]')).sendKeys('1234567'); 
 
+//3rd
+await driver.findElement(By.css('[href="https://forum.onliner.by/"]')).click(); 
+await driver.findElement(By.xpath('.//*[text()="Новое за 24 часа"]')).click(); 
+await driver.findElement(By.css('.b-list-topics li')); //OR ('li[class=""]')
+
 
 }
 catch(err) {

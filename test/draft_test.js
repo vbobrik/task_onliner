@@ -7,9 +7,9 @@ async function catalog() {
     try {
         let basePage, driver;
         //Preparation
-        driver = await basePage.driver;
-        basePage = await new BasePage(driver);
-        
+        basePage = new BasePage(driver);
+        driver = basePage.driver;
+
         await basePage.visit(URL);
         const result = await basePage.goToCatalog();
         expect(result.getText()).toEqual(await basePage.currentTitle());

@@ -13,7 +13,14 @@ module.exports = {
     EMAIL_FIELD_css: '[type="email"]',
     WRONG_EMAIL_SIGN_xpath: './/*[text()="Некорректный e-mail"]',
     PASSWORD_FIELD_css: '[placeholder="Придумайте пароль"]',
-    WRONG_PASS_SIGN_xpath: './/*[text()="Минимум 8 символов"]'
+    WRONG_PASS_SIGN_xpath: './/*[text()="Минимум 8 символов"]',
+    //Onliner forum
+    FORUM_BUTTON_css: '[href="https://forum.onliner.by/"]',
+    NEW_DURING24h_TAB_xpath: './/*[text()="Новое за 24 часа"]',
+    FOND_TOPICS_css: '.b-list-topics li', // OR ('li[class=""]') OR find without class: '.h-btmtopic li:not([class])'
+    TOPICS_PAGES_css: '.h-btmtopic li:not([class])',
+    THE_LAST_TOPICS_PAGE_css: '.h-btmtopic li:not([class]):last-child',
+    TIME_OF_TOPIC_CREATION_css: '.b-lt-author>[title]'
 }
 
 // const MAIN_URL = 'https://www.onliner.by/';
