@@ -15,10 +15,11 @@ class RegistrationPage extends BasePage {
     }
 
     async goToRegistration() {
-        await this.findByCss(logIn).click();
-        const result =  this.findByCss(registration).click();
-        return result;
-    }
+                                   await this.findByXpath(logIn).click();
+                                   await this.findByXpath(registration).click();
+                    }
+    
+                 
     //TODO: show wrong msg
     async typeEmail(emailMessage) {
         const result = await (await this.findByCss(email)).sendKeys(emailMessage);

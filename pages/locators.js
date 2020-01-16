@@ -7,6 +7,7 @@ module.exports = {
     EXPENSIVE_DROPDOWN_VALUE_xpath: './/*[text()="Дорогие"]',
     SORT_DROPDOWN_VALUE_css: '.schema-order__link',
     SCROLL_DOWN_300PX: 'window.scrollBy(0,300)',
+    PAGE_HEADER_css:'.schema-header__title',
 //Onliner registration
     ENTRANCE_BUTTON_css: '.auth-bar__item.auth-bar__item--text',
     REGISTRATION_LINK_css: '[href$="registration"]',

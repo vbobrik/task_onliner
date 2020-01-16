@@ -23,12 +23,12 @@ await console.log('------------url here');
 // await driver.findElement(By.css('.schema-product.schema-product_narrow-sizes'));
 
 //1st case
-// await driver.findElement(By.xpath('.//div/nav//*[text()="Каталог"]')).click();
-// await driver.findElement(By.xpath('.//*[text()="Мобильные телефоны"]')).click();
-// await driver.executeScript('window.scrollBy(0,300)');
-// await (await driver.findElement(By.xpath('.//li//*[text()="HONOR"]'))).click();
-// await driver.findElement(By.css('.schema-order__link')).click();
-// await driver.findElement(By.xpath('.//*[text()="Дорогие"]')).click();
+await driver.findElement(By.xpath('.//div/nav//*[text()="Каталог"]')).click();
+await driver.findElement(By.xpath('.//*[text()="Мобильные телефоны"]')).click();
+await driver.executeScript('window.scrollBy(0,300)');
+await driver.findElement(By.xpath('.//li//*[text()="HONOR"]')).click();
+await driver.findElement(By.css('.schema-order__link')).click();
+await driver.findElement(By.xpath('.//*[text()="Дорогие"]')).click();
 // GOOD
 
 

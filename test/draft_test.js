@@ -1,24 +1,34 @@
 
 const URL = 'https://www.onliner.by/';
-const BasePage = require('../pages/onlinerPage');
+const OnlinerPage = require('../pages/onlinerPage');
+const assert = require('assert');
 
-
+"use strict";
 async function catalog() {
     try {
         let basePage, driver;
         //Preparation
-        basePage = new BasePage(driver);
+        basePage = new OnlinerPage();
         driver = basePage.driver;
-
         await basePage.visit(URL);
-        const result = await basePage.goToCatalog();
-        expect(result.getText()).toEqual(await basePage.currentTitle());
+
+        // const result = await basePage.getCurrentTitle();
+        // assert(result, 'Каталог Onliner');
+
+
+        await basePage.goToMobilePhones();
+        let header = await basePage.getPageHeader();
+        console.log('---------------' + header);
+        // await basePage.getSortedElements();
+        await basePage.sortByPriceDown();
+        
+        // await basePage.sortByPriceDown();
     }
     catch (err) {
         console.error(err);
     }
     finally {
-        await basePage.quit();
+        // await basePage.quit();
     }
 }
 

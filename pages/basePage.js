@@ -15,12 +15,18 @@ class BasePage {
     }
 
     // visit a webpage
-    async visit(url) { 
+    async visit(url) {
         await this.driver.get(url);
     }
+    // navigate to webpage
+    async navigate(targetUrl) {
+        await this.driver.navigate().to(targetUrl)
+    }
+
+
 
     // get current title
-    async currentTitle() {
+    async getCurrentTitle() {
         return await this.driver.getTitle();
     }
 
@@ -30,15 +36,15 @@ class BasePage {
     }
 
     // wait and find a specific element with it's id
-    async findByCss(css) {
-        await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-        return await this.driver.findElement(By.css(css));
+    findByCss(css) {
+        //  this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        return this.driver.findElement(By.css(css));
     }
 
     // wait and find a specific elements with it's id
-    async findElementsByCss(css) {
-        await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-        return await this.driver.findElements(By.css(css));
+     findElementsByCss(css) {
+        // await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        return  this.driver.findElements(By.css(css));
     }
 
     // wait and find a specific element with it's name
@@ -48,9 +54,9 @@ class BasePage {
     }
 
     // wait and find a specific element with it's xpath
-     findByXpath(xpath) {
+    findByXpath(xpath) {
         // await this.driver.wait(until.elementLocated(By.xpath(xpath)), 5000, 'Looking for element');
-        return  this.driver.findElement(By.xpath(xpath));
+        return this.driver.findElement(By.xpath(xpath));
     }
 
     // fill input web elements
@@ -60,7 +66,7 @@ class BasePage {
 
     // execute script by driver
     async script(script) {
-        await this.executeScript(script);
+        await this.driver.executeScript(script);
     }
 }
 
