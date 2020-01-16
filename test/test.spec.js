@@ -1,4 +1,3 @@
-
 const URL = 'https://www.onliner.by/';
 const onlinerPage = require('../pages/onlinerPage');
 const registrationPage = require('../pages/registrationPage');
@@ -26,16 +25,16 @@ describe('verification of onliner pages', function () {
     //     // await basePage.navigate(URL);
     // })
 
-        //for case 2
-        beforeAll(async()=> {
+    //for case 2
+    beforeAll(async () => {
 
-            basePage = new registrationPage();
-                     driver = basePage.driver;
-            await basePage.visit(URL);
-                    })
+        basePage = new registrationPage();
+        driver = basePage.driver;
+        await basePage.visit(URL);
+    })
 
     // describe('Test case №1', function () {
-    
+
     //     it('go to catalog on the onliner and verify title',async function () {            
     //         await basePage.goToCatalog();
     //         let title = await basePage.getCurrentTitle();
@@ -52,44 +51,48 @@ describe('verification of onliner pages', function () {
     //         expect(header).toMatch('Мобильные телефоны');
     //     })
 
-        // it('sort elements by "HONOR" producer', function () {
-        //     basePage.sortByProducer();
-        //     const result = basePage.get
-        //     expect().toEqual("HONOR"); //TODO: 1. Check lower case too  2. Check on 2 pages
-        // })                                                    // Во всех результатах поиска (на двух страницах) присутствует слово «HONOR»
+    // it('sort elements by "HONOR" producer', function () {
+    //     basePage.sortByProducer();
+    //     const result = basePage.get
+    //     expect().toEqual("HONOR"); //TODO: 1. Check lower case too  2. Check on 2 pages
+    // })                                                    // Во всех результатах поиска (на двух страницах) присутствует слово «HONOR»
 
-        // it('sort elements by price descending', async function () {
-            
-            // const result = await basePage.sortByPriceDown();
-            // console.log(result);
-            // expect(result).toBeGreaterThanOrEqual(basePage.currentTitle());
-        // })
+    // it('sort elements by price descending', async function () {
+
+    // const result = await basePage.sortByPriceDown();
+    // console.log(result);
+    // expect(result).toBeGreaterThanOrEqual(basePage.currentTitle());
+    // })
     // })
 
     describe('Test case №2', function () {
         it('go to registration page', async () => {
-          await  basePage.goToRegistration();
-            let title = await basePage.getCurrentTitle();
-            await      console.log('---------------22' + title);
-                    expect(title).toContain('Регистрация');
-            // expect().toEqual(registrationPage.currentTitle());
+            let title = await basePage.goToRegistration();
+            title = await title.getText();
+            await console.log('---------------22' + title);
+            expect(title).toContain('Регистрация');
+
         })
 
-    //     it('type incorrect email', async () => {
-    //         registrationPage.typeEmail('incorrect email');
-    //         expect(registrationPage.showTipWrongEmail()).toEqual('Некорректный e-mail');
-    //     })
+            it('type incorrect email', async () => {
+               await basePage.typeEmail('incorrect email');
+                let email = await basePage.showTipWrongEmail();
+                // email = await email.getText();
+                // console.log('-------' + );
+                console.log('-------' +  email);
+                expect(email).toEqual('Некорректный e-mail');
+            })
 
-    //     it('type password less then 8 symbols', async () => {
-    //         const passUpTo7Symb = 1234567;
-    //         registrationPage.typePass(passUpTo7Symb);
-    //         expect(registrationPage.showTipWrongPass()).toEqual('Минимум 8 символов');
-    //     })
+        //     it('type password less then 8 symbols', async () => {
+        //         const passUpTo7Symb = 1234567;
+        //         registrationPage.typePass(passUpTo7Symb);
+        //         expect(registrationPage.showTipWrongPass()).toEqual('Минимум 8 символов');
+        //     })
 
-    //     it('type different pass into the pass input fields', async () => {
-    //         registrationPage.typePass(passUpTo7Symb); // TODO with spec!!!!!!!!
-    //         expect(registrationPage.showTipWrongPass()).toEqual('Пароли не совпадают');
-    //     })
+        //     it('type different pass into the pass input fields', async () => {
+        //         registrationPage.typePass(passUpTo7Symb); // TODO with spec!!!!!!!!
+        //         expect(registrationPage.showTipWrongPass()).toEqual('Пароли не совпадают');
+        //     })
     })
 
     // describe('Test case №3', function () {
@@ -118,11 +121,11 @@ describe('verification of onliner pages', function () {
     //     })
     // })
 
-    afterAll(async ()=> {
+    afterAll(async () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-            // await basePage.quit();
+        // await basePage.quit();
     })
-    
+
     // afterALL(async () => {
     //     await basePage.quit();
     // })

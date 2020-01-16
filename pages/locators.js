@@ -11,6 +11,7 @@ module.exports = {
 //Onliner registration
     ENTRANCE_BUTTON_css: '.auth-bar__item.auth-bar__item--text',
     REGISTRATION_LINK_css: '[href$="registration"]',
+    HEADER_REGISTATION_css:'.auth-form__title',
     EMAIL_FIELD_css: '[type="email"]',
     WRONG_EMAIL_SIGN_xpath: './/*[text()="Некорректный e-mail"]',
     PASSWORD_FIELD_css: '[placeholder="Придумайте пароль"]',

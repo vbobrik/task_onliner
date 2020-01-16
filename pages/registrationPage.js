@@ -1,4 +1,4 @@
-let BasePage = require('./basePage');
+const BasePage = require('./basePage');
 const locator = require('./locators');
 
 const logIn = locator.ENTRANCE_BUTTON_css;
@@ -7,6 +7,7 @@ const email = locator.EMAIL_FIELD_css;
 const wrongEmail = locator.WRONG_EMAIL_SIGN_xpath;
 const pass = locator.PASSWORD_FIELD_css;
 const wrongPass = locator.WRONG_PASS_SIGN_xpath;
+const headerRegistration = locator.HEADER_REGISTATION_css;
 
 class RegistrationPage extends BasePage {
 
@@ -15,30 +16,40 @@ class RegistrationPage extends BasePage {
     }
 
     async goToRegistration() {
-                                   await this.findByXpath(logIn).click();
-                                   await this.findByXpath(registration).click();
-                    }
-    
-                 
+        await this.findByCss(logIn).click();
+        await this.findByCss(registration).click();
+        return await this.findByCss(headerRegistration);
+    }
+
+
     //TODO: show wrong msg
     async typeEmail(emailMessage) {
-        const result = await (await this.findByCss(email)).sendKeys(emailMessage);
-        return result.getText();
+        await this.findByCss(email).sendKeys(emailMessage);
+        // return await result.getText();
     }
+
     //TODO: show wrong msg
     async typePassword() {
-        return await this.findByCss(pass).click();
+        await this.findByCss(pass).click();
     }
 
-     showTipWrongEmail() {
-        return  this.findByCss(wrongEmail);
+    showTipWrongEmail() {
+        // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
+        return new Promise(resolve => {
+            let x;
+            setTimeout(async () => {
+                x = await this.findByXpath(wrongEmail);
+            }, 2000);
+            resolve(x);
+        })
+        // return await this.findByXpath(wrongEmail);
     }
 
-     showTipWrongPass() {
-        return  this.findByCss(wrongPass);
+    async showTipWrongPass() {
+        return await this.findByXpath(wrongPass);
     }
 
-    
+
 }
 
 module.exports = RegistrationPage;
