@@ -23,7 +23,29 @@ class BasePage {
         await this.driver.navigate().to(targetUrl)
     }
 
-
+    async getAllElements(elements) {
+        const arrayOfElements = [];
+        // async  ()=> {
+            for (let element of elements) {
+                console.log('-------' + await element.getText());
+               arrayOfElements.push(element);
+            } 
+        // }
+        // await elements.reduce(async (promise, element) => {
+        //     // This line will wait for the last async function to finish.
+        //     // The first iteration uses an already resolved Promise
+        //     // so, it will immediately continue.
+        //     await promise;
+        //     const contents = await element.getText();
+        //     console.log('contents-------' + contents);
+        //     arrayOfElements.push(contents);
+        //   }, Promise.resolve());
+     
+        
+    
+       return arrayOfElements;
+    
+    }
 
     // get current title
     async getCurrentTitle() {
@@ -36,9 +58,9 @@ class BasePage {
     }
 
     // wait and find a specific element with it's id
-    findByCss(css) {
-        //  this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-        return this.driver.findElement(By.css(css));
+     findByCss(css) {
+          this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        return  this.driver.findElement(By.css(css));
     }
 
     // wait and find a specific elements with it's id
@@ -54,9 +76,9 @@ class BasePage {
     }
 
     // wait and find a specific element with it's xpath
-    findByXpath(xpath) {
-        // await this.driver.wait(until.elementLocated(By.xpath(xpath)), 5000, 'Looking for element');
-        return this.driver.findElement(By.xpath(xpath));
+     findByXpath(xpath) {
+          this.driver.wait(until.elementLocated(By.xpath(xpath)), 5000, 'Looking for element');
+        return  this.driver.findElement(By.xpath(xpath));
     }
 
     // fill input web elements

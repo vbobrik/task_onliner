@@ -39,6 +39,7 @@ class RegistrationPage extends BasePage {
             let x;
             setTimeout(async () => {
                 x = await this.findByXpath(wrongEmail);
+                console.log('-------' +  x);
             }, 2000);
             resolve(x);
         })
