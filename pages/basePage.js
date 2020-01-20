@@ -1,10 +1,14 @@
-"use strict";
-const { Builder, By, until } = require('selenium-webdriver');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const width = 1080;
 const height = 1080;
 
 class BasePage {
+    async scrollDownHotKeys() {
+        await this.driver.findElement(By.css('body')).sendKeys(Key.chord(Key.END));
+
+    }
+
     // driver = null;
     constructor() {
         this.driver = new Builder()
@@ -61,8 +65,8 @@ class BasePage {
 
     // wait and find a specific element with it's id
      findByCss(css) {
-          this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-        return  this.driver.findElement(By.css(css));
+         this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        return this.driver.findElement(By.css(css));
     }
 
     // wait and find a specific elements with it's id
@@ -73,7 +77,7 @@ class BasePage {
     // wait and find a specific element with it's name
     async findByName(name) {
         await this.driver.wait(until.elementLocated(By.name(name)), 5000, 'Looking for element');
-        return await this.driver.findElement(By.name(name));
+        return this.driver.findElement(By.name(name));
     }
 
     // wait and find a specific element with it's xpath

@@ -1,5 +1,6 @@
-let BasePage = require('./basePage');
+const BasePage = require('./basePage');
 const locator = require('./locators');
+// const {JavaScriptExecutor} = require('');
 //onliner
 const catalogButton = locator.CATALOG_BUTTON_xpath;
 const mobilePhoneButton = locator.MOBILE_PHONES_BUTTON_xpath;
@@ -30,7 +31,8 @@ const fondTopics = locator.FOND_TOPICS_css;
 const topicPages = locator.TOPICS_PAGES_css;
 const theLastTopicPage = locator.THE_LAST_TOPICS_PAGE_css;
 const topicCreationTime = locator.TIME_OF_TOPIC_CREATION_css;
-"use strict";
+const topicCreationPeriod = locator.DURATION_OF_TOPIC_CREATION_css;
+
 class OnlinerPage extends BasePage {
 
     constructor(driver, url) {
@@ -70,8 +72,6 @@ class OnlinerPage extends BasePage {
         await this.findByXpath(mobilePhoneButton).click();
     }
 
-
-
     async sortByProducer() {
         await this.script(scroll300pxScript); //scroll down
         await this.findByXpath(honorCheckbox).click();
@@ -84,12 +84,15 @@ class OnlinerPage extends BasePage {
             // ,moreFoundElements);
             // await el.click();
 
+
             // await this.script(scrollDownScript); //scroll down
+
+            // await this.scrollDownHotKeys();
             // await this.findByCss(moreFoundElements).click();
             return resolve(await this.findElementsByCss(sortedPhones))
         }, 1500))
 
-        //I TRY TO USE ANOTHER METHOD FOR MANY ELEMENTS
+        //I TRY TO USE ANOTHER METHOD FOR MANY ELEMENTS (LOOPS)
         //         await this.findElementsByCss(sortedPhones);
         //         let elements = await this.findElementsByCss(sortedPhones);
         //         console.log('-------' + elements.length);
@@ -108,22 +111,20 @@ class OnlinerPage extends BasePage {
         await this.findByXpath(expensive).click();
 
         return new Promise(resolve => setTimeout(async () => {
-            const elements = await this.findElementsByCss(priceValue);
+                const elements = await this.findElementsByCss(priceValue);
 
-            for await (let item of elements) {
+                for await (let item of elements) {
+                    text = await item.getText();
+                    arr = text.split(',');
+                    arr = arr[0].split(' ');
+                    await arrayOfElements.push(parseInt(arr[1]));
+                }
 
-                // arrayOfElements.push(item);
-                text = await item.getText();
-                arr = text.split(',');
-                arr = text.split(' ');
-                await arrayOfElements.push(arr[1]);
-            }
-
-            await console.log('arrayOfElements-------' + arrayOfElements.toString());
-            return resolve(arrayOfElements);
-        }, 3000)
+                return resolve(arrayOfElements);
+            }, 3000)
         )
     }
+
     async findTopics() {
         return await this.findElementsByCss(fondTopics);
     }
@@ -142,8 +143,8 @@ class OnlinerPage extends BasePage {
         await this.sendText(passwordSecond, secondPassword);
     }
 
-    showTipWrongEmail() {
-        // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
+    async showTipWrongEmail() {
+       // return await this.findByCss(wrongEmail);
         return new Promise(resolve => setTimeout(async () => {
             return resolve(await this.findByCss(wrongEmail));
         }, 4000))
@@ -164,48 +165,84 @@ class OnlinerPage extends BasePage {
     }
 
     async topicsTimeCreationOnTheLastPage() {
-        // await this.findByCss(theLastTopicPage).click();
         await this.findByCss(theLastTopicPage).click();
-        // await this.findElementsByCss(topicCreationTime)
-        //     .then((elements) => {
-        //         console.log('---------------' + elements.size());
-        //         for (let item of elements) {
-        //             if (item <= Data) {
-        //                 return item.getAttribute('title').then((item) => item);
-        //             } else return null;
-        //         }
-        //     })
-        //OR
-        let topics = await this.findElementsByCss(topicCreationTime);
-        const aDate = new Date();
-        const currentDate = aDate.getTime();
-        console.log('currentDate------------' + currentDate);
-        // const dateOfOneTopic = '';
+        let topics = await this.findElementsByCss(topicCreationPeriod);
+        let timeFromCreation = [];
         for (let topic of topics) {
 
-            const dateOfOneTopic = await topic.getAttribute('title');
-            console.log('topicData------------' + dateOfOneTopic);
-            // var momentDate = moment('2015-01-16 22:15:00', 'YYYY-MM-DD HH:mm:ss'); var jsDate = momentDate.toDate();
-            // var dateString = "2015-01-16 22:15:00"; 
-            let options = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-                timezone: 'Europe/Minsk'
-            };
-            let date = new Date().toLocaleString("ru", options);
-
-            // var date = Date.parse(dateOfOneTopic, "dd MM yyyy HH:mm").toLocaleString('ru', options);
-            console.log('date------------' + date);
-            //             const topicDateTime = new Date(date);
-            //             console.log('topicDataTime------------' + topicDateTime);
-            let result = ((currentDate - date) <= 24 * 60 * 60 * 1000) ? true : false;
-            console.log(result);
-            // return (currentDate - topicDateTime <= 24 * 60 * 60 * 1000) ? true : false;
+let lastAdding = await topic.getText();
+let timeFromCreation = lastAdding.split(' ');
+            console.log('timeFromCreation------------' + timeFromCreation[0]);
         }
+        return ((24 - +timeFromCreation[0] <= 24 )|| (Number.isNaN(+timeFromCreation[0])) ? true : false);
     }
 }
+
 module.exports = OnlinerPage;
+
+// async topicsTimeCreationOnTheLastPage() {
+//     // await this.findByCss(theLastTopicPage).click();
+//     await this.findByCss(theLastTopicPage).click();
+//     // await this.findElementsByCss(topicCreationTime)
+//     //     .then((elements) => {
+//     //         console.log('---------------' + elements.size());
+//     //         for (let item of elements) {
+//     //             if (item <= Data) {
+//     //                 return item.getAttribute('title').then((item) => item);
+//     //             } else return null;
+//     //         }
+//     //     })
+//     //OR
+//     let topics = await this.findElementsByCss(topicCreationPeriod);
+//
+//
+//     // let topics = await this.findElementsByCss(topicCreationTime);
+//     // const aDate = new Date();
+//     // const currentDate = aDate.getTime();
+//     // console.log('currentDate------------' + currentDate);
+//     let timeFromCreation = [];
+//     for (let topic of topics) {
+//
+//         let lastAdding = await topic.getText();
+//         let timeFromCreation = lastAdding.split(' ');
+//         console.log('timeFromCreation------------' + timeFromCreation[0]);
+//
+//         // const dateOfOneTopic = await topic.getAttribute('title');
+//
+//         // console.log('topicData------------' + dateOfOneTopic);
+//
+//         //lib MOMENTjs
+//         // var momentDate = moment('2015-01-16 22:15:00', 'YYYY-MM-DD HH:mm:ss'); var jsDate = momentDate.toDate();
+//         // var dateString = "2015-01-16 22:15:00";
+//
+//         // let options = {
+//         //     year: 'numeric',
+//         //     month: 'long',
+//         //     day: 'numeric',
+//         //     hour: '2-digit',
+//         //     minute: '2-digit',
+//         //     hour12: false,
+//         //     timezone: 'Europe/Minsk'
+//         // };
+//
+//         // var datetime = "20/02/2017 10:30";
+//         // let tmp = dateOfOneTopic.split(' ');
+//         // var date = tmp[0].split('/');
+//         // let time = tmp[3].split(':');
+//         // let result1 = new Date(tmp[2], tmp[1], tmp[0], time[0], time[1]);
+//
+//         // let date = new Date(result1);
+//         // let date = new Date(dateOfOneTopic);
+//         //    date.toLocaleString("ru", options);
+//
+//         // var date = Date.parse(dateOfOneTopic, "dd MM yyyy HH:mm").toLocaleString('ru', options);
+//         // Date.parse(dateOfOneTopic, options)
+//
+//         //             const topicDateTime = new Date(date);
+//         //             console.log('topicDataTime------------' + topicDateTime);
+//         // let result = ((currentDate - timeFromCreation[0]) <= 24 * 60 * 60 * 1000) ? true : false;
+//
+//         // return (currentDate - topicDateTime <= 24 * 60 * 60 * 1000) ? true : false;
+//     }
+//     return ((24 - +timeFromCreation[0] <= 24 )|| (Number.isNaN(+timeFromCreation[0])) ? true : false);
+// }

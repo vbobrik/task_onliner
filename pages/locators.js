@@ -30,7 +30,8 @@ module.exports = {
     FOND_TOPICS_css: '.b-list-topics li', // OR ('li[class=""]') OR find without class: '.h-btmtopic li:not([class])'
     TOPICS_PAGES_css: '.b-hdtopic > script + .b-pages li:not([class])',
     THE_LAST_TOPICS_PAGE_css: '.b-hdtopic > script + .b-pages li:not([class]):nth-last-of-type(2)', //old '.h-btmtopic li:not([class]):last-child',
-    TIME_OF_TOPIC_CREATION_css: '.b-lt-author>[title]'
+    TIME_OF_TOPIC_CREATION_css: '.b-lt-author>[title]',
+    DURATION_OF_TOPIC_CREATION_css: '.link-getlast',
 }
 
 // const MAIN_URL = 'https://www.onliner.by/';
