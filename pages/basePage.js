@@ -18,11 +18,7 @@ class BasePage {
     async visit(url) {
         await this.driver.get(url);
     }
-    // navigate to webpage
-    async navigate(targetUrl) {
-        await this.driver.navigate().to(targetUrl)
-    }
-
+ 
     async getAllElements(elements) {
         const arrayOfElements = [];
         // async  ()=> {
@@ -48,13 +44,19 @@ class BasePage {
     }
 
     // get current title
-    async getCurrentTitle() {
+    async getPageTitle() {
         return await this.driver.getTitle();
     }
+    
+    //TODO: get H1 without children!
+    async getPageHeader() {
+        //case1
+        // return (await this.findByCss(pageHeader)).getText();
+        // return await this.findByCss('h1').clone().children().remove().end().text();
+        //case3, for case1 too
+        return await this.driver.findElement(By.css('h1')).getText();
+        // console.log(trim($(".in-featuredlisting").contents().not($(".in-featuredlisting").children()).text()));
 
-    // quit current session
-    async quit() {
-        await this.driver.quit();
     }
 
     // wait and find a specific element with it's id
@@ -65,8 +67,7 @@ class BasePage {
 
     // wait and find a specific elements with it's id
      findElementsByCss(css) {
-        // await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-        return  this.driver.findElements(By.css(css));
+                return  this.driver.findElements(By.css(css));
     }
 
     // wait and find a specific element with it's name
@@ -82,14 +83,21 @@ class BasePage {
     }
 
     // fill input web elements
-    async write(el, txt) {
-        await el.sendKeys(txt);
+    async sendText(element, txt) {
+        await this.driver.findElement(By.css(element)).clear();
+        await this.driver.findElement(By.css(element)).sendKeys(txt);
     }
 
     // execute script by driver
     async script(script) {
         await this.driver.executeScript(script);
     }
+    
+    // quit current session
+    async quit() {
+        await this.driver.quit();
+    }
+
 }
 
 module.exports = BasePage;

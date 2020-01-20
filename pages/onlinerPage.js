@@ -6,18 +6,22 @@ const mobilePhoneButton = locator.MOBILE_PHONES_BUTTON_xpath;
 const honorCheckbox = locator.HONOR_CHECKBOX_xpath;
 const dropdownForSort = locator.SORT_DROPDOWN_VALUE_css;
 const expensive = locator.EXPENSIVE_DROPDOWN_VALUE_xpath;
-const scrollScript = locator.SCROLL_DOWN_300PX;
+const scroll300pxScript = locator.SCROLL_DOWN_300PX;
+const scrollDownScript = locator.SCROLL_DOWN_FULL;
 const pageHeader = locator.PAGE_HEADER_css;
 const sortedPhones = locator.SORTED_PHONES_css;
+const moreFoundElements = locator.SHOW_MORE_FOUND_ELEMENTS_css;
 // const priceValue = locator.PRICE_VALUE_css;
 const priceValue = '.schema-product__price-value.schema-product__price-value_primary';
 //registration
 const logIn = locator.ENTRANCE_BUTTON_css;
 const registration = locator.REGISTRATION_LINK_css;
 const email = locator.EMAIL_FIELD_css;
-const wrongEmail = locator.WRONG_EMAIL_SIGN_xpath;
-const pass = locator.PASSWORD_FIELD_css;
-const wrongPass = locator.WRONG_PASS_SIGN_xpath;
+const wrongEmail = locator.WRONG_EMAIL_TIP_css;
+const passwordFirst = locator.FIRST_PASSWORD_FIELD_css;
+const passwordSecond = locator.SECOND_PASSWORD_FIELD_css;
+const wrongPass = locator.WRONG_PASS_TIP_css;
+const differentPass = locator.DIFFERENT_TIP_PASS_css;
 const headerRegistration = locator.REGISTRATION_HEADER_css;
 //forum
 const forumButton = locator.FORUM_BUTTON_css;
@@ -34,16 +38,13 @@ class OnlinerPage extends BasePage {
     }
 
     async goToCatalog() {
-        // const result = this.findByXpath(catalogButton).click();
-        // console.log('---------------' + result);
-        // return result;
-        //  return await this.getCurrentUrl();
-
         await this.findByXpath(catalogButton).click();
+        return await this.getPageTitle();
     }
 
     async goToForum() {
         await this.findByCss(forumButton).click();
+        return await this.getPageTitle();
     }
 
     async goToRegistration() {
@@ -54,6 +55,7 @@ class OnlinerPage extends BasePage {
 
     async goToTheLastNews() {
         await this.findByXpath(newDuring24hTab).click();
+        return await this.getPageHeader();
     }
 
     async findTopics() {
@@ -68,99 +70,97 @@ class OnlinerPage extends BasePage {
         await this.findByXpath(mobilePhoneButton).click();
     }
 
-   
+
 
     async sortByProducer() {
-        await this.script(scrollScript);
+        await this.script(scroll300pxScript); //scroll down
         await this.findByXpath(honorCheckbox).click();
         // return await this.findElementsByCss(sortedPhones);
-        await this.findElementsByCss(sortedPhones);
-       let elements = await this.findElementsByCss(sortedPhones);
-        console.log('-------' + elements.length);
-        console.log('getAllElements-------' + await this.getAllElements(elements));
-      
-       
-    }
-  
+        return new Promise(resolve => setTimeout(async () => {
+            //I TRY TO SCROLL
+            // await   ((JavascriptExecutor)this).executeScript("arguments[0].scrollIntoView();"
+            // ,moreFoundElements);
+            // const el = await this.executeScript("arguments[0].scrollIntoView();"
+            // ,moreFoundElements);
+            // await el.click();
 
-   
+            // await this.script(scrollDownScript); //scroll down
+            // await this.findByCss(moreFoundElements).click();
+            return resolve(await this.findElementsByCss(sortedPhones))
+        }, 1500))
+
+        //I TRY TO USE ANOTHER METHOD FOR MANY ELEMENTS
+        //         await this.findElementsByCss(sortedPhones);
+        //         let elements = await this.findElementsByCss(sortedPhones);
+        //         console.log('-------' + elements.length);
+        //         console.log('getAllElements-------' + await this.getAllElements(elements));
+        // return await 
+
+    }
+
 
     async sortByPriceDown() {
-        const arrayOfElements = [];
-        const text = '';
-        const arr = [];
+        let arrayOfElements = [];
+        let text = '';
+        let arr = [];
 
-        await this.findByCss(dropdownForSort).click(); //OK
-        await this.findByXpath(expensive).click();//OK
-        //с этого момента все идет не по плану
-        const elements = await this.findElementsByCss(priceValue);
-        //   await some.size[]
-        await console.log('-------' + elements.length);
+        await this.findByCss(dropdownForSort).click();
+        await this.findByXpath(expensive).click();
 
-        async () => {
-            //  elements.forEach((item) => {
-            for (let item of elements) {
+        return new Promise(resolve => setTimeout(async () => {
+            const elements = await this.findElementsByCss(priceValue);
+
+            for await (let item of elements) {
 
                 // arrayOfElements.push(item);
                 text = await item.getText();
-                console.log('text-------' + text);
                 arr = text.split(',');
-                console.log('arr-------' + arr[0]);
-                await arrayOfElements.push(arr[0]);
+                arr = text.split(' ');
+                await arrayOfElements.push(arr[1]);
             }
-        }
 
-        await console.log('arrayOfElements-------' + arrayOfElements.toString());
-        return arrayOfElements;
+            await console.log('arrayOfElements-------' + arrayOfElements.toString());
+            return resolve(arrayOfElements);
+        }, 3000)
+        )
     }
-
-    async getPageHeader() {
-        //case1
-        // return (await this.findByCss(pageHeader)).getText();
-        // return await this.findByCss('h1').clone().children().remove().end().text();
-        //case3, for case1 too
-        return await (await this.findByCss('h1')).getText();
-        // console.log(trim($(".in-featuredlisting").contents().not($(".in-featuredlisting").children()).text()));
-
-    }
-
     async findTopics() {
         return await this.findElementsByCss(fondTopics);
     }
 
     //TODO: show wrong msg
     async typeEmail(emailMessage) {
-        await this.findByCss(email).sendKeys(emailMessage);
-        // return await result.getText();
+        await this.sendText(email, emailMessage);
     }
 
-
-    //TODO: show wrong msg
     async typePassword(writePassword) {
-        await this.findByCss(pass).sendKeys(writePassword);
-            }
+        await this.sendText(passwordFirst, writePassword);
+    }
+
+    async typeBothPasswords(firstPassword, secondPassword) {
+        await this.sendText(passwordFirst, firstPassword);
+        await this.sendText(passwordSecond, secondPassword);
+    }
 
     showTipWrongEmail() {
         // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
-        return new Promise(resolve => {
-            const x = '';
-            // const text;
-            setTimeout(async () => {
-                x = await this.findByXpath(wrongEmail);
-                // text = await x.getText();
-                console.log('x-------' + x);
-            }, 4000);
-            resolve(x);
-        })
-        // return await this.findByXpath(wrongEmail);
+        return new Promise(resolve => setTimeout(async () => {
+            return resolve(await this.findByCss(wrongEmail));
+        }, 4000))
     }
 
     async showTipWrongPass() {
-            return new Promise(resolve => setTimeout(async() => {
-              return  resolve(await this.findByXpath(wrongPass));
-         }, 1000));
+        return new Promise(resolve => setTimeout(async () => {
+            return resolve(await this.findByCss(wrongPass));
+        }, 1000));
         // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
-        
+    }
+
+    async showTipDifferentPass() {
+        return new Promise(resolve => setTimeout(async () => {
+            return resolve(await this.findByCss(differentPass));
+        }, 1000));
+        // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
     }
 
     async topicsTimeCreationOnTheLastPage() {
