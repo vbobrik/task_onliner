@@ -48,13 +48,23 @@ class OnlinerPage extends BasePage {
         await (await this.findByXpath(mobilePhoneButton)).click();
     }
 
-    //TODO: Scroll работает, но по отдельным стр. Как получ результ с 2х?
     async sortByProducer() {
-        await this.script(scroll300pxScript);
-        await (await this.findByXpath(honorCheckbox)).click();
-        await this.scrollDownHotKeys();
-        await (await this.findByCss(moreFoundElements)).click();
-        return await this.sortElements(sortedPhones);
+        try {
+            await this.script(scroll300pxScript);
+            await (await this.findByXpath(honorCheckbox)).click();
+            let arrayWithPhones = [];
+            let swichButtonClick = await this.findByCss(moreFoundElements);
+            for (let i = 1; i < 3; i++) {
+                let elem = await this.sortElements(sortedPhones);
+                arrayWithPhones = arrayWithPhones.concat(elem);
+                await this.scrollDownHotKeys();
+                if (i == 2) break;
+                await swichButtonClick.click();
+            }
+            return arrayWithPhones;
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     async sortByPriceDown() {
@@ -63,12 +73,14 @@ class OnlinerPage extends BasePage {
         const arrayWithPrices = await this.sortElements(priceValue);
         return this.getNumbersFromArray(arrayWithPrices);
     }
+
     //-------------------------------------------------------
     async goToRegistration() {
         await (await this.findByCss(logIn)).click();
         await (await this.findByCss(registration)).click();
         return await this.getPageHeader(headerRegistration);
     }
+
     // TODO: show wrong msg
     async typeEmail(emailMessage) {
         await this.sendText(email, emailMessage);
@@ -104,7 +116,7 @@ class OnlinerPage extends BasePage {
         await (await this.findByCss(forumButton)).click();
         return await this.getPageTitle();
     }
-
+//TODO: передать селектор конкретный
     async goToTheLastNews() {
         await (await this.findByXpath(newDuring24hTab)).click();
         return await this.getPageHeader();

@@ -1,4 +1,4 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
+const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const width = 1080;
 const height = 1080;
@@ -20,53 +20,39 @@ class BasePage {
     async visit(url) {
         await this.driver.get(url);
     }
- 
-    async getAllElements(elements) {
-        const arrayOfElements = [];
-        // async  ()=> {
-            for (let element of elements) {
-                console.log('-------' + await element.getText());
-               arrayOfElements.push(element);
-            } 
-        // }
-        // await elements.reduce(async (promise, element) => {
-        //     // This line will wait for the last async function to finish.
-        //     // The first iteration uses an already resolved Promise
-        //     // so, it will immediately continue.
-        //     await promise;
-        //     const contents = await element.getText();
-        //     console.log('contents-------' + contents);
-        //     arrayOfElements.push(contents);
-        //   }, Promise.resolve());
-     
-       return arrayOfElements;
-    }
 
     async getPageTitle() {
         return await this.driver.getTitle();
     }
-    
+
     //TODO: get H1 without children!
     async getPageHeader(header = 'h1') {
+    //     const sss = await this.driver.findElement(By.css('h1'));
+
+      // const headerDefault =  sss.childNodes[0].nodeValue;
+      //   console.log('headerDefault-------' + headerDefault);
+      //   return headerDefault;
+
         //case1
         // return (await this.findByCss(pageHeader)).getText();
         // return await this.findByCss('h1').clone().children().remove().end().text();
         //case3, for case1 too
+
+        //TRUE
         return await this.driver.findElement(By.css(header)).getText();
-        // console.log(trim($(".in-featuredlisting").contents().not($(".in-featuredlisting").children()).text()));
 
     }
 
     // wait and find a specific element with it's id
     async findByCss(css) {
-        await  this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
         return this.driver.findElement(By.css(css));
     }
 
     // wait and find a specific elements with it's id
-     async findElementsByCss(css) {
-        await  this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
-                return  this.driver.findElements(By.css(css));
+    async findElementsByCss(css) {
+        await this.driver.wait(until.elementLocated(By.css(css)), 5000, 'Looking for element');
+        return this.driver.findElements(By.css(css));
     }
 
     // wait a specific element with it's name
@@ -78,7 +64,7 @@ class BasePage {
     // wait and find a specific element with it's xpath
     async findByXpath(xpath) {
         await this.driver.wait(until.elementLocated(By.xpath(xpath)), 5000, 'Looking for element');
-        return  this.driver.findElement(By.xpath(xpath));
+        return this.driver.findElement(By.xpath(xpath));
     }
 
     // fill input web elements
@@ -91,7 +77,7 @@ class BasePage {
     async script(script) {
         await this.driver.executeScript(script);
     }
-    
+
     // quit current session
     async quit() {
         await this.driver.quit();
@@ -101,7 +87,6 @@ class BasePage {
         let arrayOfElements = [];
         return new Promise(resolve => setTimeout(async () => {
             const elements = await this.findElementsByCss(elementLocator);
-            console.log(elements.length);
             for await (let item of elements) {
                 let text = await item.getText();
                 arrayOfElements.push(text);
@@ -115,7 +100,7 @@ class BasePage {
         for (let item of array) {
             let arr = item.split(',');
             arr = arr[0].split(' ');
-            newArray.push(Number.parseInt(arr[1]));            
+            newArray.push(Number.parseInt(arr[1]));
         }
         return newArray;
     }
