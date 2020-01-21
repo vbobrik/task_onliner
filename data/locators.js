@@ -7,12 +7,12 @@ module.exports = {
     EXPENSIVE_DROPDOWN_VALUE_xpath: './/*[text()="Дорогие"]',
     SORT_DROPDOWN_VALUE_css: '.schema-order__link',
     SCROLL_DOWN_300PX: 'window.scrollBy(0,300)',
-    SCROLL_DOWN_FULL: 'window.scrollTo(0,140300)',
+    SCROLL_DOWN_FULL: 'window.scrollBy(0,14300)',
     PAGE_HEADER_css: '.schema-header__title',
     PRICE_VALUE_css: '.schema-product__price-value.schema-product__price-value_primary',
     SORTED_PHONES_css: '.schema-product.schema-product_narrow-sizes',
     SHOW_MORE_FOUND_ELEMENTS_css: '.schema-pagination__main>span',
-//Onliner registration
+    //Onliner registration
     ENTRANCE_BUTTON_css: '.auth-bar__item.auth-bar__item--text',
     REGISTRATION_LINK_css: '[href$="registration"]',
     REGISTRATION_HEADER_css: '.auth-form__title',
@@ -33,9 +33,3 @@ module.exports = {
     TIME_OF_TOPIC_CREATION_css: '.b-lt-author>[title]',
     DURATION_OF_TOPIC_CREATION_css: '.link-getlast',
 }
-
-// const MAIN_URL = 'https://www.onliner.by/';
-// const CATALOG_BUTTON = By.xpath('.//div/nav//*[text()="Каталог"]');
-// const MOBILE_PHONES_BUTTON = By.xpath('.//*[text()="Мобильные телефоны"]');
-// const HONOR_CHECKBOX = By.xpath('.//li//*[text()="HONOR"]');
-// const EXPENSIVE_DROPDOWN_VALUE = By.xpath('.//*[text()="Дорогие"]');

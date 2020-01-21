@@ -1,5 +1,5 @@
 const BasePage = require('./basePage');
-const locator = require('./locators');
+const locator = require('../data/locators');
 // const {JavaScriptExecutor} = require('');
 //onliner
 const catalogButton = locator.CATALOG_BUTTON_xpath;
@@ -40,96 +40,36 @@ class OnlinerPage extends BasePage {
     }
 
     async goToCatalog() {
-        await this.findByXpath(catalogButton).click();
+        await (await this.findByXpath(catalogButton)).click();
         return await this.getPageTitle();
-    }
-
-    async goToForum() {
-        await this.findByCss(forumButton).click();
-        return await this.getPageTitle();
-    }
-
-    async goToRegistration() {
-        await this.findByCss(logIn).click();
-        await this.findByCss(registration).click();
-        return await this.findByCss(headerRegistration);
-    }
-
-    async goToTheLastNews() {
-        await this.findByXpath(newDuring24hTab).click();
-        return await this.getPageHeader();
-    }
-
-    async findTopics() {
-        return await this.findElementsByCss(fondTopics);
-    }
-
-    async getSortedElements() {
-        await this.findElementsByCss(sortedPhones);
     }
 
     async goToMobilePhones() {
-        await this.findByXpath(mobilePhoneButton).click();
+        await (await this.findByXpath(mobilePhoneButton)).click();
     }
 
+    //TODO: Scroll работает, но по отдельным стр. Как получ результ с 2х?
     async sortByProducer() {
-        await this.script(scroll300pxScript); //scroll down
-        await this.findByXpath(honorCheckbox).click();
-        // return await this.findElementsByCss(sortedPhones);
-        return new Promise(resolve => setTimeout(async () => {
-            //I TRY TO SCROLL
-            // await   ((JavascriptExecutor)this).executeScript("arguments[0].scrollIntoView();"
-            // ,moreFoundElements);
-            // const el = await this.executeScript("arguments[0].scrollIntoView();"
-            // ,moreFoundElements);
-            // await el.click();
-
-
-            // await this.script(scrollDownScript); //scroll down
-
-            // await this.scrollDownHotKeys();
-            // await this.findByCss(moreFoundElements).click();
-            return resolve(await this.findElementsByCss(sortedPhones))
-        }, 1500))
-
-        //I TRY TO USE ANOTHER METHOD FOR MANY ELEMENTS (LOOPS)
-        //         await this.findElementsByCss(sortedPhones);
-        //         let elements = await this.findElementsByCss(sortedPhones);
-        //         console.log('-------' + elements.length);
-        //         console.log('getAllElements-------' + await this.getAllElements(elements));
-        // return await 
-
+        await this.script(scroll300pxScript);
+        await (await this.findByXpath(honorCheckbox)).click();
+        await this.scrollDownHotKeys();
+        await (await this.findByCss(moreFoundElements)).click();
+        return await this.sortElements(sortedPhones);
     }
-
 
     async sortByPriceDown() {
-        let arrayOfElements = [];
-        let text = '';
-        let arr = [];
-
-        await this.findByCss(dropdownForSort).click();
-        await this.findByXpath(expensive).click();
-
-        return new Promise(resolve => setTimeout(async () => {
-                const elements = await this.findElementsByCss(priceValue);
-
-                for await (let item of elements) {
-                    text = await item.getText();
-                    arr = text.split(',');
-                    arr = arr[0].split(' ');
-                    await arrayOfElements.push(parseInt(arr[1]));
-                }
-
-                return resolve(arrayOfElements);
-            }, 3000)
-        )
+        await (await this.findByCss(dropdownForSort)).click();
+        await (await this.findByXpath(expensive)).click();
+        const arrayWithPrices = await this.sortElements(priceValue);
+        return this.getNumbersFromArray(arrayWithPrices);
     }
-
-    async findTopics() {
-        return await this.findElementsByCss(fondTopics);
+    //-------------------------------------------------------
+    async goToRegistration() {
+        await (await this.findByCss(logIn)).click();
+        await (await this.findByCss(registration)).click();
+        return await this.getPageHeader(headerRegistration);
     }
-
-    //TODO: show wrong msg
+    // TODO: show wrong msg
     async typeEmail(emailMessage) {
         await this.sendText(email, emailMessage);
     }
@@ -144,37 +84,45 @@ class OnlinerPage extends BasePage {
     }
 
     async showTipWrongEmail() {
-       // return await this.findByCss(wrongEmail);
-        return new Promise(resolve => setTimeout(async () => {
-            return resolve(await this.findByCss(wrongEmail));
-        }, 4000))
+        const elem = await this.findByCss(wrongEmail);
+        return await elem.getText();
     }
 
     async showTipWrongPass() {
-        return new Promise(resolve => setTimeout(async () => {
-            return resolve(await this.findByCss(wrongPass));
-        }, 1000));
-        // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
+        const tip = await this.findByCss(wrongPass);
+        return await tip.getText();
     }
 
     async showTipDifferentPass() {
-        return new Promise(resolve => setTimeout(async () => {
-            return resolve(await this.findByCss(differentPass));
-        }, 1000));
-        // this.wait(until.elementLocated(this.findByXpath(wrongEmail)), 5000);
+        const tip = await this.findByCss(differentPass);
+        return await tip.getText();
     }
 
-    async topicsTimeCreationOnTheLastPage() {
-        await this.findByCss(theLastTopicPage).click();
+    //-------------------------------------------------------
+
+    async goToForum() {
+        await (await this.findByCss(forumButton)).click();
+        return await this.getPageTitle();
+    }
+
+    async goToTheLastNews() {
+        await (await this.findByXpath(newDuring24hTab)).click();
+        return await this.getPageHeader();
+    }
+
+    async findTopics() {
+        return await this.findElementsByCss(fondTopics);
+    }
+
+    async todaysTopicsIsOnThePage() {
+        await (await this.findByCss(theLastTopicPage)).click();
         let topics = await this.findElementsByCss(topicCreationPeriod);
         let timeFromCreation = [];
         for (let topic of topics) {
-
-let lastAdding = await topic.getText();
-let timeFromCreation = lastAdding.split(' ');
-            console.log('timeFromCreation------------' + timeFromCreation[0]);
+            let lastAdding = await topic.getText();
+            timeFromCreation = lastAdding.split(' ');
         }
-        return ((24 - +timeFromCreation[0] <= 24 )|| (Number.isNaN(+timeFromCreation[0])) ? true : false);
+        return ((24 - +timeFromCreation[0] <= 24) || (Number.isNaN(+timeFromCreation[0])) ? true : false);
     }
 }
 
