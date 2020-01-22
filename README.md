@@ -1,25 +1,28 @@
 # Task Onliner:
 
 The project was created for verification Onliner site.
+The "test" folder contains all tests
+The "pages" folder contains page description files using PageObject model
+The "data" folder contains all locators 
 
 ## Installation:
 
-To install all dependencies on Windows type the command into the command line (terminal):
+### if you have chromedriver on your comuter:
+To install all dependencies type the command into the command line (terminal):
 
-```npm ci
+```npm ci ```
+
+### if you don't have chromedriver on your comuter:
+To install driver for browser "Chrome" type the command into the command line (terminal):
+
+``` npm install chromedriver --chromedriver-force-download ```
+
+To install all dependencies type the command into the command line (terminal):
+
+``` npm ci ```
 
 ## Usage
 
 To run your test suite:
 
-```npm test```
-
-
- you may specify the path to your jasmine.json by setting an environment variable or an option:
-
-## Configuration
-
-Customize spec/support/jasmine.json to enumerate the source and spec files you would like the Jasmine runner to include.
-you may specify the path to your jasmine.json by setting an environment variable or an option:
-``` jasmine JASMINE_CONFIG_PATH=relative/path/to/your/jasmine.json
-jasmine --config=relative/path/to/your/jasmine.json
+`` npm test ```
