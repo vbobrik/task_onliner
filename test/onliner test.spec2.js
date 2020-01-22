@@ -47,4 +47,3 @@ describe('Test case №1, verification of onliner page:', function () {
         console.error(err);
     }
 })
-

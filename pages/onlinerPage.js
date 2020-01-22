@@ -59,7 +59,7 @@ class OnlinerPage extends BasePage {
         } catch (err) {
             console.error(err);
         }
-    }
+    } 
 
     async sortByPriceDown() {
         await (await this.findByCss(dropdownForSort)).click();
