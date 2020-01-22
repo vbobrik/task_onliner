@@ -5,12 +5,12 @@ The project was created for verification Onliner site.
 ## Installation:
 
 To install all dependencies on Windows type the command into the command line (terminal):
-``` npm ci ```
+```npm ci```
 
 ## Usage
 
 To run your test suite:
-`` npm test ```
+```npm test```
 
 
  you may specify the path to your jasmine.json by setting an environment variable or an option:
