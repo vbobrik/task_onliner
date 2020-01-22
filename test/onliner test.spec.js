@@ -46,6 +46,5 @@ describe('Test case №1, verification of onliner page:', function () {
     catch (err) {
         console.error(err);
     }
-
 })
 
