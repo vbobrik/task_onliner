@@ -25,4 +25,4 @@ To install all dependencies type the command into the command line (terminal):
 
 To run your test suite:
 
-`` npm test ```
+``` npm test ```
